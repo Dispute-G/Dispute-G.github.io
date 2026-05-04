@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Настройка среды - Модонаписание на NeoForge 1.21.1</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+</head>
+<body>
+    <!-- Боковое меню -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h2>Содержание</h2>
+            <button class="close-btn" onclick="toggleSidebar()">&times;</button>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="index.html">Главная страница</a>
+                </li>
+                <li>
+                    <a href="setup-environment.html" class="active">Настройка среды</a>
+                </li>
+                <li>
+                    <a href="#" class="topic">Предметы</a>
+                    <ul class="subtopics">
+                        <li><a href="first-item.html">Первое добавление предмета</a></li>
+                        <li><a href="item-properties.html">Свойства предметов</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="creative-tab.html">Креативная вкладка</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Оверлей для закрытия меню -->
+    <div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Основной контент -->
+    <div class="main-content">
+        <!-- Кнопка меню -->
+        <button class="menu-btn" onclick="toggleSidebar()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- Контент страницы -->
+        <div class="content-section">
+            <h1>Настройка среды разработки</h1>
+            
+            <div class="tutorial-text">
+                <p class="intro-paragraph">Честно признаюсь - я сам в этом не очень силён. Настройка среды разработки - это довольно сложная тема, и лучше обратиться к более опытным людям.</p>
+                
+                <h2>Рекомендую посмотреть видео</h2>
+                <p>Я советую канал <a href="https://www.youtube.com/@ModdingByKaupenjoe" target="_blank">Kaupenjoe</a> - там всё объясняется очень подробно и понятно.</p>
+                
+                <p>У него есть <a href="https://www.youtube.com/watch?v=yG-oJPR_40w&list=PLKGarocXCE1G6CQOoiYdMVx-E1d9F_itF" target="_blank">плейлист по написанию модов на NeoForge 1.21</a>, где первые видео как раз про установку всего необходимого.</p>
+                
+                <h2>Что нужно установить (кратко):</h2>
+                <ul>
+                    <li><strong>Java Development Kit (JDK) 21</strong> - язык программирования</li>
+                    <li><strong>IntelliJ IDEA Community Edition</strong> - программа для написания кода (бесплатная)</li>
+                    <li><strong>NeoForge MDK</strong> - шаблон проекта для мода</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

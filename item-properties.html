@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Свойства предметов - Модонаписание на NeoForge 1.21.1</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+</head>
+<body>
+    <!-- Боковое меню -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h2>Содержание</h2>
+            <button class="close-btn" onclick="toggleSidebar()">&times;</button>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="index.html">Главная страница</a>
+                </li>
+                <li>
+                    <a href="setup-environment.html">Настройка среды</a>
+                </li>
+                <li>
+                    <a href="#" class="topic">Предметы</a>
+                    <ul class="subtopics">
+                        <li><a href="first-item.html">Первое добавление предмета</a></li>
+                        <li><a href="item-properties.html" class="active">Свойства предметов</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="creative-tab.html">Креативная вкладка</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Оверлей для закрытия меню -->
+    <div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Основной контент -->
+    <div class="main-content">
+        <!-- Кнопка меню -->
+        <button class="menu-btn" onclick="toggleSidebar()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- Контент страницы -->
+        <div class="content-section">
+            <h1>Свойства предметов</h1>
+            
+            <div class="tutorial-text">
+                <p>Если вы хотите чуть разнообразить свои предметы, прямо при их создании вы можете, используя <code>registerItem</code>, дополнить в ваши предметы какие-либо свойства. Допустим, количество предметов в стаке - условно оставить 64 шт. по классике или сделать 16 шт., как у жемчуга Эндера.</p>
+
+                <h2>Пример с настройками</h2>
+                <p>Пойдём по порядку. Выглядит такое создание следующим образом:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">ModItems.java - предмет с настройками</div>
+                <textarea class="code-editor" data-mode="text/x-java">public static final DeferredItem<Item> MAGIC_DUST =
+        ITEMS.registerItem("magic_dust", Item::new,
+                new Item.Properties().rarity(Rarity.RARE)
+                        .stacksTo(16)
+                        .fireResistant()
+        );</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <h3>Разбираем по порядку:</h3>
+                <p>Сначала, как и в <code>registerSimpleItem()</code>, вы указываете внутреннее имя предмета, далее ссылка на конструктор <code>Item::new</code>, после этого сами настройки предмета <code>new Item.Properties()</code>, к которым дополняем желаемые.</p>
+
+                <p>В примере выше указаны 3 настройки:</p>
+                <ul>
+                    <li><code>.rarity(Rarity.RARE)</code> - "раритетность" предмета, иными словами, цвет его названия (но это просто встроенный метод с 4 имеющимися цветами, через локализацию можно поменять на больший спектр цветов через <code>§cИмя_предмета</code>, где <code>§c</code> - тег цвета/шрифта, найти их можно в интернете)</li>
+                    <li><code>.stacksTo(16)</code> - это ограничение в стаке, о котором я писал, то есть в стаке будет всего 16 предметов</li>
+                    <li><code>.fireResistant()</code> - огнеупорный предмет</li>
+                </ul>
+
+                <div class="info-box">
+                    <strong>💡 Важно:</strong> Всё, от первого способа создания предмета больше никаких отличий.
+                </div>
+
+                <hr class="section-divider">
+
+                <h2>Пример с едой</h2>
+                <p>Для закрепления материала вот иной пример:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">ModItems.java - съедобный предмет</div>
+                <textarea class="code-editor" data-mode="text/x-java">public static final DeferredItem<Item> LEMON =
+        ITEMS.registerItem("lemon", Item::new,
+                new Item.Properties().rarity(Rarity.EPIC).food(
+                        new FoodProperties.Builder()
+                            .nutrition(4)
+                            .saturationModifier(0.5f)
+                            .effect(() -> new MobEffectInstance(MobEffects.LEVITATION, 400, 1), 1.0F)
+                            .alwaysEdible()
+                            .fast()
+                            .build()
+                )
+        );</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <p>Здесь мы видим больший текст, но лишь потому, что с помощью настройки <code>.food()</code> мы сделали наш предмет едой, а внутри неё настроили ей детали, такие как насыщение, количество сердец и эффект от того, что съели, и так далее.</p>
+
+                <h3>Настройки еды:</h3>
+                <ul>
+                    <li><code>.nutrition(4)</code> - количество восстанавливаемого голода (4 = 2 куриные ножки)</li>
+                    <li><code>.saturationModifier(0.5f)</code> - модификатор насыщения (скрытый параметр, влияет на то, как быстро снова проголодаетесь)</li>
+                    <li><code>.effect(...)</code> - эффект, который даётся при съедении (в примере - левитация на 20 секунд, уровень 2, с шансом 100%)</li>
+                    <li><code>.alwaysEdible()</code> - можно есть даже с полным голодом (как золотое яблоко)</li>
+                    <li><code>.fast()</code> - быстрое поедание (как сушёные водоросли)</li>
+                    <li><code>.build()</code> - завершение настройки еды</li>
+                </ul>
+
+                <div class="success-box">
+                    <strong>✅ На этом пока всё!</strong> Более детальную работу с предметами и блоками смотрите в других темах, где под них выделяются отдельные классы.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Креативная вкладка - Модонаписание на NeoForge 1.21.1</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+</head>
+<body>
+    <!-- Боковое меню -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h2>Содержание</h2>
+            <button class="close-btn" onclick="toggleSidebar()">&times;</button>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="index.html">Главная страница</a>
+                </li>
+                <li>
+                    <a href="setup-environment.html">Настройка среды</a>
+                </li>
+                <li>
+                    <a href="#" class="topic">Предметы</a>
+                    <ul class="subtopics">
+                        <li><a href="first-item.html">Первое добавление предмета</a></li>
+                        <li><a href="item-properties.html">Свойства предметов</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="creative-tab.html" class="active">Креативная вкладка</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Оверлей для закрытия меню -->
+    <div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Основной контент -->
+    <div class="main-content">
+        <!-- Кнопка меню -->
+        <button class="menu-btn" onclick="toggleSidebar()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- Контент страницы -->
+        <div class="content-section">
+            <h1>Креативная вкладка</h1>
+            
+            <div class="tutorial-text">
+                <p>Для собственного удобства или игроков, которые используют ваш мод, было бы неплохо иметь свою отдельную креативную вкладку. Её добавление крайне простое.</p>
+
+                <h2>Создание класса</h2>
+                <p>Для начала мы создадим отдельный класс под это. Помним - структурирование проекта!</p>
+                <p>В моём случае он будет по пути:</p>
+                <p><code>C:\Users\evi\Desktop\Minecraft Mods\My Learning\src\main\java\com\asrug\learning_mod\client\ModCreativeTabs.java</code></p>
+
+                <p>Познакомимся с двумя вариантами работы с креативной вкладкой.</p>
+
+                <hr class="section-divider">
+
+                <h2>Вариант 1: Добавление в существующую вкладку</h2>
+                <p>Добавление нашего предмета в уже существующую вкладку в игре, допустим, в "Ингредиенты":</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">ModCreativeTabs.java - добавление в существующую вкладку</div>
+                <textarea class="code-editor" data-mode="text/x-java">@EventBusSubscriber(modid = LearningMod.MODID, bus = EventBusSubscriber.Bus.MOD)
+public class ModCreativeTabs {
+    @SubscribeEvent
+    public static void addCreative(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(ModItems.SAPHIRE);
+            event.accept(ModItems.MAGIC_DUST);
+        }
+    }
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <h3>Пойдём по порядку:</h3>
+
+                <h4>@EventBusSubscriber</h4>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">Аннотация класса</div>
+                <textarea class="code-editor" data-mode="text/x-java">@EventBusSubscriber(modid = LearningMod.MODID, bus = EventBusSubscriber.Bus.MOD)</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <p>Это подписка на шину событий всего класса. Вся игра построена на тех или иных ивентах (запросах), данная аннотация позволяет автоматически "прослушивать" их, чтобы с ними взаимодействовать.</p>
+
+                <h4>@SubscribeEvent</h4>
+                <p>Это аннотация метода для обработки этих самых ивентов.</p>
+
+                <h4>Логика добавления</h4>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">Метод добавления предметов</div>
+                <textarea class="code-editor" data-mode="text/x-java">public static void addCreative(BuildCreativeModeTabContentsEvent event) {
+    if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+        event.accept(ModItems.SAPHIRE);
+        event.accept(ModItems.MAGIC_DUST);
+    }
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <p>В метод мы передаём тип события, в нашем случае работа с креативной вкладкой. Далее, если переводить на русский: "Если ключ вкладки является Ингредиенты, то добавляем в неё такой-то предмет".</p>
+
+                <p>Таких проверок мы можем указать сразу несколько для разных вкладок:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">Несколько вкладок</div>
+                <textarea class="code-editor" data-mode="text/x-java">@SubscribeEvent
+public static void addCreative(BuildCreativeModeTabContentsEvent event) {
+    if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+        event.accept(ModItems.SAPHIRE);
+        event.accept(ModItems.MAGIC_DUST);
+    }
+    if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
+        event.accept(ModItems.LEMON);
+    }
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <div class="success-box">
+                    <strong>✅ Важно:</strong> Благодаря первой аннотации нам не нужно нигде регистрировать наш класс, всё произойдёт автоматически!
+                </div>
+
+                <hr class="section-divider">
+
+                <h2>Вариант 2: Создание своей вкладки</h2>
+                <p>Далее, второй вариант работы, куда интереснее - создание своей вкладки:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">ModCreativeTabs.java - своя вкладка</div>
+                <textarea class="code-editor" data-mode="text/x-java">public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS =
+        DeferredRegister.create(Registries.CREATIVE_MODE_TAB, LearningMod.MODID);
+
+public static final DeferredHolder<CreativeModeTab, CreativeModeTab> LEARNING_TAB =
+        CREATIVE_TABS.register("learning_tab", () -> CreativeModeTab.builder()
+                .title(Component.translatable("itemGroup.learning_mod"))
+                .icon(() -> ModItems.RUBY.get().getDefaultInstance())
+                .displayItems((parameters, output) -> {
+                    output.accept(ModItems.RUBY.get());
+                })
+                .build()
+        );
+
+public static void register(IEventBus eventBus) {
+    CREATIVE_TABS.register(eventBus);
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <p>Он схож с созданием предметов или блоков. Сначала создаём список для регистраций, в следующем методе создаём, настраиваем её и добавляем свои предметы, после этого создаём метод регистрации, который в дальнейшем вызовем в главном классе.</p>
+
+                <h3>Чуть подробнее по настройке:</h3>
+                <ul>
+                    <li><code>"learning_tab", () -> CreativeModeTab.builder()</code> - регистрация и ID вкладки</li>
+                    <li><code>.title(Component.translatable("itemGroup.learning_mod"))</code> - имя вкладки для локализации (в файле .lang по этому пути можно добавить своё название)</li>
+                    <li><code>.icon(() -> ModItems.RUBY.get().getDefaultInstance())</code> - заглавная иконка вкладки</li>
+                    <li><code>.displayItems((parameters, output) -> {output.accept(ModItems.RUBY.get());})</code> - сами предметы во вкладке, перечислением можем добавить и больше</li>
+                </ul>
+
+                <p>Например:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">Несколько предметов во вкладке</div>
+                <textarea class="code-editor" data-mode="text/x-java">.displayItems((parameters, output) -> {
+    output.accept(ModItems.RUBY.get());
+    output.accept(ModItems.SAPPHIRE.get());
+    output.accept(ModItems.LEMON.get());
+    output.accept(ModBlocks.RUBY_BLOCK.get());
+})</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <h3>Регистрация в основном классе</h3>
+                <p>Всё, дальше возвращаемся в основной класс и вызываем метод регистрации креативной вкладки:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">LearningMod.java</div>
+                <textarea class="code-editor" data-mode="text/x-java">@Mod(LearningMod.MODID)
+public class LearningMod {
+    public static final String MODID = "learning_mod";
+    
+    public LearningMod(IEventBus modEventBus) {
+        ModCreativeTabs.register(modEventBus);
+    }
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <hr class="section-divider">
+
+                <h2>Полный пример класса</h2>
+                <p>Оба варианта мы можем использовать вместе, и тем самым готовый класс будет выглядеть подобным образом:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">ModCreativeTabs.java - полный класс</div>
+                <textarea class="code-editor" data-mode="text/x-java">package com.asrug.learning_mod.client;
+
+import com.asrug.learning_mod.LearningMod;
+import com.asrug.learning_mod.items.ModItems;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
+
+@EventBusSubscriber(modid = LearningMod.MODID, bus = EventBusSubscriber.Bus.MOD)
+public class ModCreativeTabs {
+    @SubscribeEvent
+    public static void addCreative(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(ModItems.SAPHIRE);
+            event.accept(ModItems.MAGIC_DUST);
+        }
+        if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
+            event.accept(ModItems.LEMON);
+        }
+    }
+
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS =
+            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, LearningMod.MODID);
+
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> LEARNING_TAB =
+            CREATIVE_TABS.register("learning_tab", () -> CreativeModeTab.builder()
+                    .title(Component.translatable("itemGroup.learning_mod"))
+                    .icon(() -> ModItems.RUBY.get().getDefaultInstance())
+                    .displayItems((parameters, output) -> {
+                        output.accept(ModItems.RUBY.get());
+                    })
+                    .build()
+            );
+
+    public static void register(IEventBus eventBus) {
+        CREATIVE_TABS.register(eventBus);
+    }
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <div class="success-box">
+                    <strong>🎉 Готово!</strong> Теперь у вас есть своя креативная вкладка с вашими предметами!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

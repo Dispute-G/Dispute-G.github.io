@@ -1,0 +1,612 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-purple: #1a0033;
+    --secondary-purple: #2d1b4e;
+    --accent-purple: #4a2c6b;
+    --light-purple: #6b4a8d;
+    --text-light: #e0d4f7;
+    --text-white: #ffffff;
+    --sidebar-width: 280px;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--primary-purple) 0%, var(--secondary-purple) 100%);
+    color: var(--text-light);
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+/* Боковое меню */
+.sidebar {
+    position: fixed;
+    left: -100%;
+    top: 0;
+    width: var(--sidebar-width);
+    height: 100vh;
+    background: var(--secondary-purple);
+    transition: left 0.3s ease;
+    z-index: 1000;
+    overflow-y: auto;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+.sidebar-header {
+    padding: 20px;
+    background: var(--accent-purple);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--light-purple);
+}
+
+.sidebar-header h2 {
+    color: var(--text-white);
+    font-size: 1.5rem;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: var(--text-white);
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.close-btn:hover {
+    transform: rotate(90deg);
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 10px 0;
+}
+
+.sidebar-nav > ul > li {
+    margin: 5px 0;
+}
+
+.sidebar-nav a {
+    display: block;
+    padding: 12px 20px;
+    color: var(--text-light);
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.sidebar-nav a:hover {
+    background: var(--accent-purple);
+    padding-left: 25px;
+}
+
+.sidebar-nav a.active {
+    background: var(--light-purple);
+    color: var(--text-white);
+    font-weight: bold;
+}
+
+.sidebar-nav .topic {
+    font-weight: bold;
+    color: var(--text-white);
+    position: relative;
+    cursor: pointer;
+}
+
+.sidebar-nav .topic::after {
+    content: '▶';
+    position: absolute;
+    right: 20px;
+    transition: transform 0.3s ease;
+    font-size: 0.8rem;
+}
+
+.sidebar-nav .topic.expanded::after {
+    transform: rotate(90deg);
+}
+
+.sidebar-nav .subtopics {
+    padding-left: 0;
+    display: none;
+}
+
+.sidebar-nav .subtopics.expanded {
+    display: block;
+    padding-left: 20px;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.sidebar-nav .subtopics li {
+    margin: 3px 0;
+}
+
+.sidebar-nav .subtopics a {
+    font-size: 0.95rem;
+    padding: 8px 20px;
+}
+
+/* Оверлей */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+}
+
+.overlay.active {
+    display: block;
+}
+
+/* Кнопка меню */
+.menu-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    background: var(--accent-purple);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.menu-btn:hover {
+    background: var(--light-purple);
+    transform: scale(1.05);
+}
+
+.menu-btn span {
+    width: 25px;
+    height: 3px;
+    background: var(--text-white);
+    border-radius: 2px;
+    transition: all 0.3s;
+}
+
+/* Основной контент */
+.main-content {
+    margin-left: 0;
+    padding: 100px 40px 40px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Главная страница */
+.hero-section {
+    text-align: center;
+    padding: 60px 20px;
+    margin-bottom: 40px;
+}
+
+.main-title {
+    font-size: 3.5rem;
+    color: var(--text-white);
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px rgba(107, 74, 141, 0.5);
+    line-height: 1.2;
+}
+
+.subtitle {
+    font-size: 1.8rem;
+    color: var(--light-purple);
+    font-weight: normal;
+    margin-top: 10px;
+}
+
+.content-section {
+    background: var(--secondary-purple);
+    border-radius: 12px;
+    padding: 40px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.intro-text p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: var(--text-light);
+}
+
+/* Страницы уроков */
+.content-section h1 {
+    color: var(--text-white);
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    border-bottom: 3px solid var(--light-purple);
+    padding-bottom: 15px;
+}
+
+.tutorial-text h2 {
+    color: var(--text-white);
+    font-size: 1.8rem;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.tutorial-text h3 {
+    color: var(--light-purple);
+    font-size: 1.4rem;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.tutorial-text p {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.tutorial-text ul {
+    margin-left: 30px;
+    margin-bottom: 20px;
+}
+
+.tutorial-text li {
+    margin-bottom: 10px;
+    font-size: 1.05rem;
+}
+
+.tutorial-text code {
+    background: var(--accent-purple);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    color: #ff79c6;
+}
+
+.tutorial-text strong {
+    color: var(--text-white);
+}
+
+/* Блоки кода */
+.code-block {
+    margin: 30px 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.code-header {
+    background: var(--accent-purple);
+    padding: 12px 20px;
+    color: var(--text-white);
+    font-weight: bold;
+    border-bottom: 2px solid var(--light-purple);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.copy-btn {
+    background: var(--light-purple);
+    border: none;
+    color: var(--text-white);
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.copy-btn:hover {
+    background: #8b6bb0;
+    transform: translateY(-1px);
+}
+
+.copy-btn:active {
+    transform: translateY(0);
+}
+
+.copy-btn::before {
+    content: "📋";
+}
+
+.copy-btn.copied::before {
+    content: "✓";
+}
+
+.code-editor {
+    width: 100%;
+    min-height: 200px;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    border: none;
+    resize: vertical;
+}
+
+.CodeMirror {
+    height: auto;
+    max-height: 600px;
+    font-size: 14px;
+    border-radius: 0 0 8px 8px;
+}
+
+.CodeMirror-scroll {
+    min-height: auto;
+    max-height: 600px;
+}
+
+/* Комментарии */
+.comments-section {
+    background: var(--secondary-purple);
+    border-radius: 12px;
+    padding: 30px;
+    margin-top: 40px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.comments-section h3 {
+    color: var(--text-white);
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--light-purple);
+    padding-bottom: 10px;
+}
+
+.comments-list {
+    margin-bottom: 30px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.comment {
+    background: var(--accent-purple);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 4px solid var(--light-purple);
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    color: var(--light-purple);
+    font-size: 0.9rem;
+}
+
+.comment-author {
+    font-weight: bold;
+    color: var(--text-white);
+}
+
+.comment-text {
+    color: var(--text-light);
+    line-height: 1.5;
+}
+
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.comment-form textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 15px;
+    background: var(--accent-purple);
+    border: 2px solid var(--light-purple);
+    border-radius: 8px;
+    color: var(--text-light);
+    font-family: inherit;
+    font-size: 1rem;
+    resize: vertical;
+}
+
+.comment-form textarea:focus {
+    outline: none;
+    border-color: var(--light-purple);
+    box-shadow: 0 0 10px rgba(107, 74, 141, 0.3);
+}
+
+.comment-form button {
+    align-self: flex-end;
+    padding: 12px 30px;
+    background: var(--light-purple);
+    color: var(--text-white);
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.comment-form button:hover {
+    background: #8b6bb0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 2rem;
+    }
+    
+    .subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .content-section {
+        padding: 20px;
+    }
+    
+    .main-content {
+        padding: 80px 20px 20px 20px;
+    }
+    
+    .tutorial-text h1 {
+        font-size: 1.8rem;
+    }
+    
+    .tutorial-text h2 {
+        font-size: 1.4rem;
+    }
+}
+
+/* Дополнительные стили для страницы настройки */
+.intro-paragraph {
+    font-size: 1.2rem;
+    color: var(--text-white);
+    background: var(--accent-purple);
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid var(--light-purple);
+    margin-bottom: 30px;
+}
+
+.warning-box, .info-box, .success-box, .tip-box, .problem-box {
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border-left: 4px solid;
+}
+
+.warning-box {
+    background: rgba(255, 152, 0, 0.1);
+    border-color: #ff9800;
+    color: #ffb74d;
+}
+
+.info-box {
+    background: rgba(33, 150, 243, 0.1);
+    border-color: #2196f3;
+    color: #64b5f6;
+}
+
+.success-box {
+    background: rgba(76, 175, 80, 0.1);
+    border-color: #4caf50;
+    color: #81c784;
+}
+
+.tip-box {
+    background: rgba(156, 39, 176, 0.1);
+    border-color: #9c27b0;
+    color: #ba68c8;
+}
+
+.problem-box {
+    background: rgba(244, 67, 54, 0.1);
+    border-color: #f44336;
+    color: #e57373;
+    margin-bottom: 20px;
+}
+
+.problem-box h4 {
+    color: #ff8a80;
+    margin-bottom: 10px;
+}
+
+.checklist {
+    list-style: none;
+    margin-left: 0;
+}
+
+.checklist li:before {
+    content: "✓ ";
+    color: var(--light-purple);
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.step-list {
+    margin-left: 20px;
+}
+
+.step-list li {
+    margin-bottom: 20px;
+    padding-left: 10px;
+}
+
+.step-list ul {
+    margin-top: 10px;
+}
+
+.section-divider {
+    border: none;
+    border-top: 2px solid var(--accent-purple);
+    margin: 40px 0;
+}
+
+.output-box {
+    background: #1e1e1e;
+    padding: 15px;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    color: #4caf50;
+    margin: 15px 0;
+    border: 1px solid var(--accent-purple);
+}
+
+.tutorial-text a {
+    color: var(--light-purple);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--light-purple);
+    transition: all 0.3s;
+}
+
+.tutorial-text a:hover {
+    color: #8b6bb0;
+    border-bottom-style: solid;
+}
+
+/* Скроллбар */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--primary-purple);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--light-purple);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #8b6bb0;
+}

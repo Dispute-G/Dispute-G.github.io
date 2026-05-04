@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Первое добавление предмета - Модонаписание на NeoForge 1.21.1</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+</head>
+<body>
+    <!-- Боковое меню -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h2>Содержание</h2>
+            <button class="close-btn" onclick="toggleSidebar()">&times;</button>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="index.html">Главная страница</a>
+                </li>
+                <li>
+                    <a href="setup-environment.html">Настройка среды</a>
+                </li>
+                <li>
+                    <a href="#" class="topic">Предметы</a>
+                    <ul class="subtopics">
+                        <li><a href="first-item.html" class="active">Первое добавление предмета</a></li>
+                        <li><a href="item-properties.html">Свойства предметов</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="creative-tab.html">Креативная вкладка</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Оверлей для закрытия меню -->
+    <div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Основной контент -->
+    <div class="main-content">
+        <!-- Кнопка меню -->
+        <button class="menu-btn" onclick="toggleSidebar()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- Контент страницы -->
+        <div class="content-section">
+            <h1>Первое добавление предмета</h1>
+            
+            <div class="tutorial-text">
+                <h2>Подготовка проекта</h2>
+                <p>Когда вы зайдёте в скачанный MDK, вы увидите подобный путь:</p>
+                <p><code>Learning\src\main\java\com\asrug\learning_mod</code></p>
+                
+                <p>В нём будет ряд классов с созданными заранее предметами. Я бы рекомендовал, чтобы сначала не забивать голову, удалить все классы кроме <strong>"ExampleMod"</strong>.</p>
+                
+                <p>В нём тоже сотрите всё и оставьте:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">ExampleMod.java (в данном случае LearningMod.java)</div>
+                <textarea class="code-editor" data-mode="text/x-java">package com.asrug.learning_mod;
+
+import net.neoforged.fml.common.Mod;
+
+@Mod(LearningMod.MODID)
+public class LearningMod {
+    public static final String MODID = "learning_mod";
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <h3>Пойдём по порядку:</h3>
+                <ul>
+                    <li><code>package com.asrug.learning_mod;</code> - путь до основного класса, в котором вы сейчас находитесь</li>
+                    <li><code>import net.neoforged.fml.common.Mod;</code> - импортирование аннотации <code>@Mod</code>, она обязательна для отметки главного класса мода. В неё передаётся константа ID вашего мода, которую вы создадите далее</li>
+                    <li><code>LearningMod</code> - название основного класса мода</li>
+                    <li><code>public static final String MODID = "learning_mod";</code> - создание константы ID вашего мода, далее вы будете её часто использовать</li>
+                </ul>
+
+                <hr class="section-divider">
+
+                <h2>Структурирование проекта</h2>
+                <p>Теперь перейдём к самому созданию предмета. Начнём с основного - структурирование проекта.</p>
+                
+                <div class="tip-box">
+                    <strong>💡 Важно:</strong> Учитесь сразу избегать скопления кода в одном месте. Разбивайте конкретную тему по отдельным классам.
+                </div>
+
+                <p>Для начала создадим такой путь:</p>
+                <p><code>Learning\src\main\java\com\asrug\learning_mod\items</code></p>
+                
+                <p>В нём создадим класс <strong>ModItems</strong> - он будет служить нам основным классом для добавления предметов.</p>
+
+                <hr class="section-divider">
+
+                <h2>Добавление простого предмета</h2>
+                <p>Начнём с добавления простых предметов без каких-то встроенных в них эффектов, кастома и прочего. Просто предмет с текстурой.</p>
+                
+                <p>Добавление такого предмета выглядит так:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">ModItems.java</div>
+                <textarea class="code-editor" data-mode="text/x-java">package com.asrug.learning_mod.items;
+
+import net.minecraft.world.item.Item;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import com.asrug.learning_mod.LearningMod;
+
+public class ModItems {
+    public static final DeferredRegister.Items ITEMS =
+            DeferredRegister.createItems(LearningMod.MODID);
+
+    public static final DeferredItem<Item> RUBY =
+            ITEMS.registerSimpleItem("ruby");
+
+    public static void register(IEventBus eventBus) {
+        ITEMS.register(eventBus);
+    }
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <h3>Разбираем по порядку:</h3>
+                
+                <h4>1. Регистр предметов</h4>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">Создание регистра</div>
+                <textarea class="code-editor" data-mode="text/x-java">public static final DeferredRegister.Items ITEMS =
+        DeferredRegister.createItems(LearningMod.MODID);</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <p><code>DeferredRegister</code> - это список дел для регистрации при загрузке мода. Конкретно для предметов используется <code>Items</code>.</p>
+
+                <h4>2. Регистрация предмета</h4>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">Добавление предмета</div>
+                <textarea class="code-editor" data-mode="text/x-java">public static final DeferredItem<Item> RUBY =
+        ITEMS.registerSimpleItem("ruby");</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <p>Здесь мы очень быстро добавляем предмет <code>ruby</code> в указанный выше список.</p>
+
+                <h4>3. Метод регистрации</h4>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">Метод register</div>
+                <textarea class="code-editor" data-mode="text/x-java">public static void register(IEventBus eventBus) {
+    ITEMS.register(eventBus);
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <p>Это метод, чтобы вызвать саму регистрацию предметов. Его мы вызовем в дальнейшем в основном классе.</p>
+
+                <hr class="section-divider">
+
+                <h2>Подключение к основному классу</h2>
+                <p>Теперь возвращаемся к основному классу:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">LearningMod.java (обновлённый)</div>
+                <textarea class="code-editor" data-mode="text/x-java">package com.asrug.learning_mod;
+
+import com.asrug.learning_mod.items.ModItems;
+
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.Mod;
+
+@Mod(LearningMod.MODID)
+public class LearningMod {
+    public static final String MODID = "learning_mod";
+    
+    public LearningMod(IEventBus modEventBus) {
+        ModItems.register(modEventBus);
+    }
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <h3>Что здесь происходит:</h3>
+                <ul>
+                    <li><code>public LearningMod</code> - конструктор класса (об этом подробнее в обучении Java)</li>
+                    <li><code>IEventBus modEventBus</code> - шина событий, нужна, чтобы зарегистрировать наши объекты в нужный момент</li>
+                    <li><code>ModItems.register(modEventBus)</code> - это вызов метода, который мы создали в <code>ModItems</code></li>
+                </ul>
+
+                <div class="success-box">
+                    <strong>✅ Готово!</strong> Таким образом мы создаём предмет <code>ruby</code>. Внутреннее имя будет <code>learning_mod:ruby</code>, где первое - ID мода, второе - название предмета, которое мы указали выше.
+                </div>
+
+                <hr class="section-divider">
+
+                <h2>Проверка в игре</h2>
+                <p>Если мы зайдём в игру и напишем <code>/give @p learning_mod:ruby</code>, мы получим стак нашего предмета. Он уже будет существовать в игре, но будет иметь "шахматку" - так называется фиолетово-чёрная текстура, обозначающая отсутствие таковой.</p>
+
+                <hr class="section-divider">
+
+                <h2>Добавление текстуры</h2>
+                <p>Для придания текстуры потребуются две вещи - файл модели и сама текстура. Так как мы не придавали никаких уточнений в предмете, NeoForge будет искать их в путях по умолчанию.</p>
+
+                <h3>Модель предмета</h3>
+                <p>Путь: <code>Learning\src\main\resources\assets\learning_mod\models\item</code></p>
+                <p>В нём создаём файл <strong>ruby.json</strong>, в котором указываем:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">ruby.json</div>
+                <textarea class="code-editor" data-mode="application/json">{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "learning_mod:item/ruby"
+  }
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <ul>
+                    <li><code>"parent": "minecraft:item/generated"</code> - это использование стандартного 2D-спрайта предмета</li>
+                    <li><code>"textures"</code> - какие текстуры использовать</li>
+                    <li><code>"layer0"</code> - основной слой текстуры</li>
+                    <li><code>"learning_mod:item/ruby"</code> - путь к текстуре (автоматически добавляется .png)</li>
+                </ul>
+
+                <h3>Текстура предмета</h3>
+                <p>Дальше по пути <code>Learning\src\main\resources\assets\learning_mod\textures\item</code> мы добавляем .png текстуру предмета.</p>
+
+                <div class="success-box">
+                    <strong>✅ Всё!</strong> Это основное, чтобы наш предмет просто был и чтобы имел корректную текстуру, которую вы сами захотите.
+                </div>
+
+                <hr class="section-divider">
+
+                <h2>Важные уточнения</h2>
+
+                <h3>1) Локализация (перевод названия)</h3>
+                <p>Используйте файл локализации - это .json файл, чтобы вы могли поменять внутреннее имя предмета на то, которое сами захотите. Для англоязычной локализации используйте <strong>en_us.json</strong>, для русской <strong>ru_ru.json</strong>.</p>
+                
+                <p>Путь: <code>Learning\src\main\resources\assets\learning_mod\lang</code></p>
+                <p>В нём пишем:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">ru_ru.json</div>
+                <textarea class="code-editor" data-mode="application/json">{
+  "item.learning_mod.ruby": "Рубин"
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <p>И тем самым мы получим предмет уже не с именем <code>item.learning_mod.ruby</code>, а просто <strong>Рубин</strong>.</p>
+
+                <h3>2) Анимационная текстура</h3>
+                <p>Далее, если вы хотите создать анимационную текстуру, её нужно поменять и добавить файл .mcmeta.</p>
+
+                <h4>По порядку:</h4>
+                <p>Сама текстура должна быть разбита на кадры, идущие сверху вниз. То есть, если вы хотите три кадра, а текстура у вас 16×16, то вы делаете её 16×48 (48 по вертикали!), тем самым разбиваете текстуру на три участка 16×16, в каждой размещая свой кадр.</p>
+
+                <p>Далее вы создаёте новый файл с таким названием: <strong>ruby.png.mcmeta</strong>. То есть, берёте прям название вашей текстуры и добавляете .mcmeta (не удаляете вашу текстуру! Создаёте новый файл!).</p>
+
+                <p>В нём пишите:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">ruby.png.mcmeta (автоматическое переключение)</div>
+                <textarea class="code-editor" data-mode="application/json">{
+  "animation": {
+    "frametime": 20
+  }
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <p>Это автоматическое переключение между вашими кадрами, начиная с верхнего каждые 20 тиков (1 секунда). Вы можете менять значение тиков как захотите.</p>
+
+                <p>Если вы хотите своё кастомное переключение кадров, то пишите:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">ruby.png.mcmeta (кастомная раскадровка)</div>
+                <textarea class="code-editor" data-mode="application/json">{
+  "animation": {
+    "frametime": 20,
+    "frames": [0, 1, 2, 1]
+  }
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <p>Где <code>frames</code> - это список из раскадровки, в каком порядке им идти, где 0 - это первый кадр текстуры.</p>
+
+                <div class="success-box">
+                    <strong>🎉 Вот и всё, ваш первый предмет готов!</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

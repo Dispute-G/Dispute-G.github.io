@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Модонаписание на NeoForge 1.21.1</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+</head>
+<body>
+    <!-- Боковое меню -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h2>Содержание</h2>
+            <button class="close-btn" onclick="toggleSidebar()">&times;</button>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="index.html" class="active">Главная страница</a>
+                </li>
+                <li>
+                    <a href="setup-environment.html">Настройка среды</a>
+                </li>
+                <li>
+                    <a href="#" class="topic">Предметы</a>
+                    <ul class="subtopics">
+                        <li><a href="first-item.html">Первое добавление предмета</a></li>
+                        <li><a href="item-properties.html">Свойства предметов</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="creative-tab.html">Креативная вкладка</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Оверлей для закрытия меню -->
+    <div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Основной контент -->
+    <div class="main-content">
+        <!-- Кнопка меню -->
+        <button class="menu-btn" onclick="toggleSidebar()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- Контент главной страницы -->
+        <div class="hero-section">
+            <h1 class="main-title">Модонаписание на NeoForge 1.21.1</h1>
+            <h2 class="subtitle">Руководство для чайников от чайника</h2>
+        </div>
+
+        <div class="content-section">
+            <div class="intro-text">
+                <p>Привет! Я обычный человек, который только начинает свой путь в модонаписании. Я не эксперт и не профессионал - я такой же новичок, как и ты. Но я решил делиться своим опытом и учиться вместе с тобой!</p>
+                <p>В этом руководстве я буду объяснять всё максимально простым языком, без сложных терминов и заумных фраз. Мы будем учиться вместе, шаг за шагом создавая свой первый мод для Minecraft на NeoForge 1.21.1.</p>
+                <p>Если что-то непонятно - пиши в комментариях, разберёмся вместе! 🚀</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
