@@ -348,32 +348,32 @@ body {
 .code-editor {
     width: 100%;
     min-height: 200px;
-    padding: 12px;
-    background: #1e1e1e;
-    color: #d4d4d4;
     font-family: 'Courier New', monospace;
     font-size: 14px;
-    border: none;
     resize: vertical;
-    white-space: pre;
-    overflow-x: auto;
-    overflow-y: auto;
-    overflow-wrap: normal;
-    word-break: normal;
-    tab-size: 4;
-    -webkit-overflow-scrolling: touch;
 }
 
 .CodeMirror {
-    height: auto;
+    height: auto !important;
     max-height: 600px;
     font-size: 14px;
     border-radius: 0 0 8px 8px;
+    background: #1e1e1e;
 }
 
 .CodeMirror-scroll {
-    min-height: auto;
-    max-height: 600px;
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+    white-space: pre !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+}
+
+.CodeMirror pre.CodeMirror-line,
+.CodeMirror pre.CodeMirror-line-like {
+    white-space: pre !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
 }
 
 /* Комментарии */
@@ -493,6 +493,13 @@ body {
     
     .tutorial-text h2 {
         font-size: 1.4rem;
+    }
+    
+    .CodeMirror {
+        font-size: 13px;
+    }
+    .CodeMirror-scroll {
+        -webkit-overflow-scrolling: touch;
     }
 }
 
