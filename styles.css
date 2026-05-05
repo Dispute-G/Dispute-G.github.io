@@ -289,6 +289,11 @@ body {
     border-radius: 4px;
     font-family: 'Courier New', monospace;
     color: #ff79c6;
+    
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    line-height: 1.45;
 }
 
 .tutorial-text strong {
@@ -493,6 +498,11 @@ body {
     
     .tutorial-text h2 {
         font-size: 1.4rem;
+    }
+    
+    .tutorial-text code {
+        font-size: 0.97rem;
+        padding: 4px 7px;
     }
     
     .CodeMirror {
