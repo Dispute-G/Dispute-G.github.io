@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
             theme: 'dracula',
             lineNumbers: true,
             readOnly: true,
-            lineWrapping: true,
+            lineWrapping: false,
             indentUnit: 4,
             tabSize: 4,
             indentWithTabs: false,
