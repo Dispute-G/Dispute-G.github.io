@@ -348,12 +348,20 @@ body {
 .code-editor {
     width: 100%;
     min-height: 200px;
+    padding: 12px;
+    background: #1e1e1e;
+    color: #d4d4d4;
     font-family: 'Courier New', monospace;
     font-size: 14px;
     border: none;
     resize: vertical;
     white-space: pre;
     overflow-x: auto;
+    overflow-y: auto;
+    overflow-wrap: normal;
+    word-break: normal;
+    tab-size: 4;
+    -webkit-overflow-scrolling: touch;
 }
 
 .CodeMirror {
