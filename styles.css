@@ -503,6 +503,8 @@ body {
     .tutorial-text code {
         font-size: 0.97rem;
         padding: 4px 7px;
+        word-break: break-all;
+        white-space: pre-wrap;
     }
     
     .CodeMirror {
