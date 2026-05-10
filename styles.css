@@ -262,15 +262,23 @@ body {
 }
 
 .tutorial-text h3 {
-    color: var(--light-purple);
+    color: #ffffff;
     font-size: 1.4rem;
     margin-top: 20px;
     margin-bottom: 10px;
 }
 
+.tutorial-text h4 {
+    color: #ffffff;
+    font-size: 1.2rem;
+    margin-top: 15px;
+    margin-bottom: 8px;
+}
+
 .tutorial-text p {
     margin-bottom: 15px;
     font-size: 1.1rem;
+    color: #ffffff;
 }
 
 .tutorial-text ul {
@@ -281,6 +289,7 @@ body {
 .tutorial-text li {
     margin-bottom: 10px;
     font-size: 1.05rem;
+    color: #ffffff;
 }
 
 .tutorial-text code {
@@ -289,11 +298,6 @@ body {
     border-radius: 4px;
     font-family: 'Courier New', monospace;
     color: #ff79c6;
-    
-    white-space: pre-wrap;
-    overflow-wrap: break-word;
-    word-break: break-word;
-    line-height: 1.45;
 }
 
 .tutorial-text strong {
@@ -355,30 +359,20 @@ body {
     min-height: 200px;
     font-family: 'Courier New', monospace;
     font-size: 14px;
+    border: none;
     resize: vertical;
 }
 
 .CodeMirror {
-    height: auto !important;
+    height: auto;
     max-height: 600px;
     font-size: 14px;
     border-radius: 0 0 8px 8px;
-    background: #1e1e1e;
 }
 
 .CodeMirror-scroll {
-    overflow-x: auto !important;
-    overflow-y: auto !important;
-    white-space: pre !important;
-    word-break: normal !important;
-    overflow-wrap: normal !important;
-}
-
-.CodeMirror pre.CodeMirror-line,
-.CodeMirror pre.CodeMirror-line-like {
-    white-space: pre !important;
-    word-break: normal !important;
-    overflow-wrap: normal !important;
+    min-height: auto;
+    max-height: 600px;
 }
 
 /* Комментарии */
@@ -498,20 +492,6 @@ body {
     
     .tutorial-text h2 {
         font-size: 1.4rem;
-    }
-    
-    .tutorial-text code {
-        font-size: 0.97rem;
-        padding: 4px 7px;
-        word-break: break-all;
-        white-space: pre-wrap;
-    }
-    
-    .CodeMirror {
-        font-size: 13px;
-    }
-    .CodeMirror-scroll {
-        -webkit-overflow-scrolling: touch;
     }
 }
 
@@ -638,4 +618,100 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #8b6bb0;
+}
+
+/* Диаграмма потока */
+.flow-diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 30px 0;
+    padding: 20px;
+    background: var(--accent-purple);
+    border-radius: 8px;
+}
+
+.flow-step {
+    background: var(--light-purple);
+    color: var(--text-white);
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    min-width: 250px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.flow-arrow {
+    font-size: 2rem;
+    color: var(--light-purple);
+    margin: 10px 0;
+}
+
+/* Список свойств блока */
+.properties-list {
+    margin: 20px 0;
+}
+
+.property-item {
+    background: var(--accent-purple);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 4px solid var(--light-purple);
+}
+
+.property-item code {
+    display: block;
+    background: var(--secondary-purple);
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    color: #ff79c6;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.property-item p {
+    color: #ffffff;
+    margin-bottom: 10px;
+    line-height: 1.6;
+    font-size: 1.05rem;
+}
+
+.property-item ul {
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.property-item li {
+    color: #ffffff;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.property-item li code {
+    display: inline;
+    background: var(--secondary-purple);
+    padding: 2px 6px;
+    font-size: 0.9rem;
+}
+
+/* Адаптивность для новых элементов */
+@media (max-width: 768px) {
+    .flow-step {
+        min-width: 200px;
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .property-item {
+        padding: 15px;
+    }
+    
+    .property-item code {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+    }
 }

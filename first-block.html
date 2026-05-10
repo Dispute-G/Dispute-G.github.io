@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Первое добавление блока - Модонаписание на NeoForge 1.21.1</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+</head>
+<body>
+    <!-- Боковое меню -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h2>Содержание</h2>
+            <button class="close-btn" onclick="toggleSidebar()">&times;</button>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="index.html">Главная страница</a>
+                </li>
+                <li>
+                    <a href="setup-environment.html">Настройка среды</a>
+                </li>
+                <li>
+                    <a href="#" class="topic">Предметы</a>
+                    <ul class="subtopics">
+                        <li><a href="first-item.html">Первое добавление предмета</a></li>
+                        <li><a href="item-properties.html">Свойства предметов</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="topic">Блоки</a>
+                    <ul class="subtopics">
+                        <li><a href="first-block.html" class="active">Первое добавление блока</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="creative-tab.html">Креативная вкладка</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Оверлей для закрытия меню -->
+    <div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Основной контент -->
+    <div class="main-content">
+        <!-- Кнопка меню -->
+        <button class="menu-btn" onclick="toggleSidebar()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- Контент страницы -->
+        <div class="content-section">
+            <h1>Первое добавление блока</h1>
+            
+            <div class="tutorial-text">
+                <p>Создание своего блока практически идентично созданию предмета.</p>
+                
+                <p>Создаем папку <strong>blocks</strong>, в ней класс <strong>ModBlocks</strong> (помним про структурирование).</p>
+                
+                <p>В нем всё то же самое, а именно:</p>
+                
+                <div class="flow-diagram">
+                    <div class="flow-step">Создание списка регистраций</div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-step">Внесение блока в список</div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-step">Регистрация списка</div>
+                </div>
+
+                <h2>Начнем</h2>
+                
+                <h3>Создаем основу класса:</h3>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">ModBlocks.java (основа)</div>
+                <textarea class="code-editor" data-mode="text/x-java">package com.asrug.learning_mod.blocks;
+
+public class ModBlocks {
+    
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <h3>Вносим в него создание списка регистраций:</h3>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">Создание регистра блоков</div>
+                <textarea class="code-editor" data-mode="text/x-java">public static final DeferredRegister.Blocks BLOCKS =
+        DeferredRegister.createBlocks(LearningMod.MODID);</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <h3>Создаем блок и вносим в список:</h3>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">Регистрация блока</div>
+                <textarea class="code-editor" data-mode="text/x-java">public static final DeferredBlock<Block> RUBY_BLOCK =
+        BLOCKS.registerSimpleBlock("ruby_block",
+                BlockBehaviour.Properties.of()
+                        .strength(5.0f, 6.0f)
+        );</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <h3>Создаем метод для регистрации списка:</h3>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">Метод register</div>
+                <textarea class="code-editor" data-mode="text/x-java">public static void register(IEventBus eventBus) {
+    BLOCKS.register(eventBus);
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <h3>Далее в основном классе вызываем этот метод таким же способом, как и другие регистрации:</h3>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">LearningMod.java</div>
+                <textarea class="code-editor" data-mode="text/x-java">ModBlocks.register(modEventBus);</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <p>Это если тезисно по созданию, теперь к деталям. Я не буду расписывать по импортированным классам и их методам, ибо это уже есть в теме предметов. Лучше расскажу про <code>registerSimpleBlock()</code>.</p>
+
+                <hr class="section-divider">
+
+                <h2>Характеристики блока</h2>
+                
+                <p>В <code>registerSimpleBlock()</code> помимо внутреннего нейминга есть также и аргумент характеристик блока. В моем случае это:</p>
+                
+                <div class="code-block">
+                    <div class="code-header">Пример характеристик</div>
+                    <textarea class="code-editor" data-mode="text/x-java">.strength(5.0f, 6.0f)</textarea>
+                </div>
+
+                <p>Это <strong>твердость</strong> и <strong>взрывоустойчивость</strong> блока. Если указать одно float значение, то оба аргумента будут одинаковыми.</p>
+
+                <div class="tip-box">
+                    <strong>💡 Совет:</strong> Если указать отрицательную твердость <code>-1.0F</code> - это будет означать, что блок нерушимый, такой как бедрок.
+                </div>
+
+                <h3>Как узнать значения блоков?</h3>
+                
+                <p>Узнать значения блоков вы можете довольно легко на вики Minecraft по запросу "алмазная руда" — справа во вкладке внутренней информации будут указаны характеристики блока.</p>
+
+                <h4>Либо чуть более продвинутый уровень, к которому я настоятельно рекомендую прибегать:</h4>
+                
+                <p>Пишите в коде <code>Blocks.DIAMOND_ORE</code> (или другой интересующий вас блок/предмет), наводите курсор на <code>DIAMOND_ORE</code> и нажимаете <strong>Ctrl + ЛКМ</strong>. Вас перебросит в этот класс на указанную константу. Через <strong>Ctrl + F</strong> вы получите поисковик по классу, указав в нем название нужного вам блока, вы найдете, как он регистрируется и какие аргументы там указаны. Допустим, алмазная руда:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">Пример из исходников Minecraft</div>
+                <textarea class="code-editor" data-mode="text/x-java">DIAMOND_ORE = register("diamond_ore", new DropExperienceBlock(UniformInt.of(3, 7), 
+    Properties.of()
+        .mapColor(MapColor.STONE)
+        .instrument(NoteBlockInstrument.BASEDRUM)
+        .requiresCorrectToolForDrops()
+        .strength(3.0F, 3.0F)));</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <p>Готово, блок зарегистрирован в игре, но, чтобы мы могли с ним взаимодействовать, ставить, получать дроп в виде этого блока, нам нужно создать его BlockItem. Переходим в ранее созданный ModItems и дополняем его:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">ModItems.java (добавление BlockItem)</div>
+                <textarea class="code-editor" data-mode="text/x-java">public static final DeferredItem<BlockItem> RUBY_BLOCK =
+        ITEMS.registerSimpleBlockItem("ruby_block", ModBlocks.RUBY_BLOCK);</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <p>Тем самым мы дополняем уже созданный ранее список регистраций айтемов, более нам ничего не потребуется.</p>
+
+                <hr class="section-divider">
+
+                <h2>Модель и текстура блока</h2>
+                
+                <p>Теперь перейдем к модели и текстуре блока. Структура этих файлов выглядит так:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">Структура файлов блока</div>
+                <textarea class="code-editor" data-mode="text/plain">assets/learning_mod/
+├── blockstates/
+│   └── ruby_block.json          ← Состояния блока
+├── models/
+│   ├── block/
+│   │   └── ruby_block.json      ← Модель в мире
+│   └── item/
+│       └── ruby_block.json      ← Модель в инвентаре
+├── textures/
+│   └── block/
+│       └── ruby_block.png       ← Текстура
+└── lang/
+    └── ru_ru.json               ← Перевод</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <h3>1. Blockstates (Состояния блока)</h3>
+                <p>В файле <strong>blockstates/ruby_block.json</strong> мы пишем:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">blockstates/ruby_block.json</div>
+                <textarea class="code-editor" data-mode="application/json">{
+  "variants": {
+    "": {
+      "model": "learning_mod:block/ruby_block"
+    }
+  }
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <p>Это то, как выглядит блок в мире в конкретном состоянии.</p>
+
+                <h3>2. Модель блока в мире</h3>
+                <p>В файле <strong>models/block/ruby_block.json</strong> мы пишем:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">models/block/ruby_block.json</div>
+                <textarea class="code-editor" data-mode="application/json">{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "learning_mod:block/ruby_block"
+  }
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <p>Это 3D-модель блока в мире, которую использует блокстейт.</p>
+
+                <h3>3. Модель блока в инвентаре</h3>
+                <p>В папке <strong>models/item/ruby_block.json</strong> мы пишем:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">models/item/ruby_block.json</div>
+                <textarea class="code-editor" data-mode="application/json">{
+  "parent": "learning_mod:block/ruby_block"
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <p>Это то, как блок отображается в инвентаре.</p>
+
+                <h3>4. Локализация</h3>
+                <p>Ну и соответственно уже знакомая нам локализация:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">lang/ru_ru.json</div>
+                <textarea class="code-editor" data-mode="application/json">{
+  "block.learning_mod.ruby_block": "Блок рубина"
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <hr class="section-divider">
+
+                <h2>Инструменты для добычи блока</h2>
+                
+                <p>Также мы можем указать конкретный инструмент и его уровень для добычи нашего блока. По порядку, создаем путь:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">Структура папок для тегов</div>
+                <textarea class="code-editor" data-mode="text/plain">src/main/resources/data/
+├── minecraft/
+    └── tags/
+        └── block/
+            └── mineable/</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <p>В нем мы можем указать два типа файлов. Первый — это какой инструмент использовать для добычи. Есть несколько видов:</p>
+                
+                <ul>
+                    <li><strong>pickaxe.json</strong> — блоки, ломаемые киркой</li>
+                    <li><strong>axe.json</strong> — блоки, ломаемые топором</li>
+                    <li><strong>shovel.json</strong> — блоки, ломаемые лопатой</li>
+                    <li><strong>hoe.json</strong> — блоки, ломаемые мотыгой</li>
+                </ul>
+
+                <p>Ими мы добавляем наши блоки в уже существующий список этих инструментов в Minecraft.</p>
+
+                <p>В нашем случае — рубиновый блок, логичнее его отнести к кирке. Создаем файл <strong>pickaxe.json</strong> и указываем в нем:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">minecraft/tags/block/mineable/pickaxe.json</div>
+                <textarea class="code-editor" data-mode="application/json">{
+  "values": [
+    "learning_mod:ruby_block"
+  ]
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <p>Далее мы можем развить это направление, указав, с какого уровня инструмента мы можем добывать блок. Есть также несколько видов уровней:</p>
+                
+                <ul>
+                    <li><strong>needs_stone_tool.json</strong></li>
+                    <li><strong>needs_iron_tool.json</strong></li>
+                    <li><strong>needs_diamond_tool.json</strong></li>
+                </ul>
+
+                <p>Думаю, тут нет смысла объяснять. Допустим, я хочу, чтобы дроп с моего блока выпадал с железной кирки и выше. Я создаю файл <strong>needs_iron_tool.json</strong> в папке:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">Путь к файлу уровня инструмента</div>
+                <textarea class="code-editor" data-mode="text/plain">src/main/resources/data/
+└── minecraft/
+    └── tags/
+        └── block/</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <p>В нем пишем:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">minecraft/tags/block/needs_iron_tool.json</div>
+                <textarea class="code-editor" data-mode="application/json">{
+  "values": [
+    "learning_mod:ruby_block"
+  ]
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <h3>Настройка дропа блока</h3>
+                
+                <p>Далее мы можем немного поиграть с дропом блока. Для этого нам понадобится создать путь:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">Структура папок для loot table</div>
+                <textarea class="code-editor" data-mode="text/plain">src/main/resources/data/
+└── learning_mod/
+    └── loot_table/
+        └── blocks/</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <p>В нем мы создаем файл <strong>ruby_block.json</strong>. Он отвечает за настройку дропа, они могут быть разными. Короткий вариант выглядит так:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">learning_mod/loot_table/blocks/ruby_block.json (простой вариант)</div>
+                <textarea class="code-editor" data-mode="application/json">{
+  "type": "minecraft:block",           // Это loot table для блока
+  "pools": [                           // Пулы дропа (можно несколько)
+    {
+      "rolls": 1,                      // Сколько раз "бросить кубик" (1 = один предмет)
+      "entries": [                     // Что может выпасть
+        {
+          "type": "minecraft:item",    // Тип: предмет
+          "name": "learning_mod:sapphire_block"  // ID предмета
+        }
+      ]
+    }
+  ]
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <ul>
+                    <li><strong>Пулы дропа</strong> — разные дропы. С алмазной руды выпадают не только алмазы, но и, например, опыт.</li>
+                    <li><strong>"бросить кубик"</strong> — рандомизация, мы можем указать, сколько дропа выпадает за раз. Как количеством, так и шансом, это укажу в примере ниже.</li>
+                </ul>
+
+                <p>Чтобы сильно не растягивать тему, дам пример более полного кода с комментариями:</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">learning_mod/loot_table/blocks/ruby_block.json (полный вариант)</div>
+                <textarea class="code-editor" data-mode="application/json">{
+  "type": "minecraft:block",                                    // Тип: loot table для блока
+  "pools": [                                                    // Массив пулов дропа
+    {                                                           // Пул 1: без Silk Touch
+      "rolls": 1,                                               // Выпадет 1 раз
+      "entries": [                                              // Что может выпасть
+        {
+          "type": "minecraft:item",                             // Тип: предмет
+          "name": "learning_mod:ruby",                          // Выпадает RUBY (не блок руды)
+          "functions": [                                        // Функции модификации дропа
+            {
+              "function": "minecraft:set_count",                // Функция: установить количество
+              "count": {                                        // Диапазон количества
+                "min": 2,                                       // Минимум 2 предмета
+                "max": 5                                        // Максимум 5 предметов
+              }
+            },
+            {
+              "function": "minecraft:apply_bonus",              // Функция: применить бонус зачарования
+              "enchantment": "minecraft:fortune",               // Зачарование: Удача (Fortune)
+              "formula": "minecraft:ore_drops"                  // Формула: как для руд (больше удача = больше дроп)
+            },
+            {
+              "function": "minecraft:explosion_decay"           // Функция: шанс потерять при взрыве
+            }
+          ]
+        }
+      ],
+      "conditions": [                                           // Условия для этого пула
+        {
+          "condition": "minecraft:match_tool",                  // Условие: проверка инструмента
+          "predicate": {                                        // Предикат проверки
+            "predicates": {                                     // Список предикатов
+              "minecraft:enchantments": [                       // Проверка зачарований
+                {
+                  "enchantments": "minecraft:silk_touch"        // Зачарование: Шёлковое касание
+                }
+              ]
+            },
+            "inverted": true                                    // Инвертировать (НЕ Silk Touch)
+          }
+        }
+      ]
+    },
+    {                                                           // Пул 2: с Silk Touch
+      "rolls": 1,                                               // Выпадет 1 раз
+      "entries": [                                              // Что может выпасть
+        {
+          "type": "minecraft:item",                             // Тип: предмет
+          "name": "learning_mod:ruby_ore"                       // Выпадает блок руды (с Silk Touch)
+        }
+      ],
+      "conditions": [                                           // Условия для этого пула
+        {
+          "condition": "minecraft:match_tool",                  // Условие: проверка инструмента
+          "predicate": {                                        // Предикат проверки
+            "predicates": {                                     // Список предикатов
+              "minecraft:enchantments": [                       // Проверка зачарований
+                {
+                  "enchantments": "minecraft:silk_touch",       // Зачарование: Шёлковое касание
+                  "levels": {                                   // Уровень зачарования
+                    "min": 1                                    // Минимум 1 уровень
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}</textarea>
+            </div>
+
+            <div class="tutorial-text">
+                <p>На этом базовое создание блока подошло к концу.</p>
+
+                <hr class="section-divider">
+
+                <h2>Полный список характеристик блока</h2>
+                
+                <p>Теперь чуть больше о характеристиках блока:</p>
+
+                <div class="properties-list">
+                    <div class="property-item">
+                        <code>.strength()</code>
+                        <p>Уже познакомились - твердость и взрывоустойчивость.</p>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.sound(SoundType.STONE)</code>
+                        <p>Звук блока, когда с ним как-либо взаимодействуешь.</p>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.lightLevel(state -> 15)</code>
+                        <p>Уровень света от блока. 15 - факел.</p>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.requiresCorrectToolForDrops()</code>
+                        <p>Чтобы получить дроп блока, понадобится конкретный инструмент. Это дополнение к файлам в папке tags. Допустим, алмазная руда не будет выпадать, если её ломать каменной киркой. Без этого метода — будет.</p>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.noOcclusion()</code>
+                        <p>Прозрачный блок. Допустим, трава — сквозь её модель видно остальное пространство.</p>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.noCollission()</code>
+                        <p>Нет коллизии, то есть блок не мешает прохождению сквозь свою модель. Та же самая трава.</p>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.friction(0.6f)</code>
+                        <p>Скользкость блока. Когда вы идете по льду и резко останавливаетесь, вы чуть прокатываетесь дальше — это аргумент, отвечающий за данную механику. 0.6F стоит по умолчанию, у льда значение 0.98F.</p>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.speedFactor(1.0f)</code>
+                        <p>Скорость, с которой вы движетесь по блоку. Для примера, у песка душ — 0.5F.</p>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.jumpFactor(1.0f)</code>
+                        <p>Высота прыжка по блоку, у мёда стоит 0.5F.</p>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.noLootTable()</code>
+                        <p>Блок не имеет таблицы лута — с него ничего не выпадет при разрушении.</p>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.dropsLike(Blocks.STONE)</code>
+                        <p>Копирование дропа с другого указанного блока.</p>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.ignitedByLava()</code>
+                        <p>Воспламенение от лавы. Допустим, как дерево.</p>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.air()</code>
+                        <p>Помечает блок как воздух.</p>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.isValidSpawn((state, level, pos, entityType) -> false)</code>
+                        <p>Могут ли мобы спавниться на блоке.</p>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.isRedstoneConductor((state, level, pos) -> true)</code>
+                        <p>Проводит ли редстоун.</p>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.isSuffocating((state, level, pos) -> true)</code>
+                        <p>Задыхается ли игрок в блоке.</p>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.isViewBlocking((state, level, pos) -> true)</code>
+                        <p>Блокирует ли обзор. Нужно на чуть более продвинутом уровне для оптимизации рендера.</p>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.hasPostProcess((state, level, pos) -> true)</code>
+                        <p>Нужна ли постобработка рендера.</p>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.emissiveRendering((state, level, pos) -> true)</code>
+                        <p>Блок светится, но не дает визуального свечения, как факел.</p>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.offsetType(BlockBehaviour.OffsetType.XZ)</code>
+                        <p>Случайное смещение блока по X и Z, есть также: <code>OffsetType.XYZ</code> Допустим, есть модель небольшого цветка — если они будут стоять как солдаты в ряд, это выглядит неестественно. Можно использовать смещение по XZ, чтобы поле цветов выглядело естественнее.</p>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.pushReaction(PushReaction.NORMAL)</code>
+                        <p>Реакция на поршень. Есть такие параметры:</p>
+                        <ul>
+                            <li><code>PushReaction.NORMAL</code> - Толкается поршнем</li>
+                            <li><code>PushReaction.DESTROY</code> - Разрушается поршнем</li>
+                            <li><code>PushReaction.BLOCK</code> - Блокирует поршень</li>
+                            <li><code>PushReaction.IGNORE</code> - Игнорируется поршнем</li>
+                            <li><code>PushReaction.PUSH_ONLY</code> - Только толкается (не тянется)</li>
+                        </ul>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.mapColor(MapColor.STONE)</code>
+                        <p>Цвет, с которым блок отображается на карте, когда вы его держите в руке. Есть такие параметры:</p>
+                        <ul>
+                            <li><code>MapColor.STONE</code> - Серый (камень)</li>
+                            <li><code>MapColor.WOOD</code> - Коричневый (дерево)</li>
+                            <li><code>MapColor.METAL</code> - Светло-серый (металл)</li>
+                            <li><code>MapColor.GRASS</code> - Зеленый (трава)</li>
+                            <li><code>MapColor.DIAMOND</code> - Голубой (алмаз)</li>
+                            <li><code>MapColor.GOLD</code> - Желтый (золото)</li>
+                            <li><code>MapColor.EMERALD</code> - Изумрудный</li>
+                            <li><code>MapColor.LAPIS</code> - Синий (lapis)</li>
+                        </ul>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.randomTicks()</code>
+                        <p>Даёт рандомные тики (рост растений, таяние льда и так далее). Используется в кастомных классах блока — чуть более продвинутый уровень. Последующие методы тоже пойдут оттуда, поэтому перейдем мы к ним позже.</p>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.dynamicShape()</code>
+                        <p>Форма блока меняется. Условная дверь.</p>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.liquid()</code>
+                        <p>Помечаем блок как жидкость.</p>
+                    </div>
+
+                    <div class="property-item">
+                        <code>.forceSolidOn()</code>
+                        <p>Принудительная твердость блока. Если блок неполный (допустим, плита), то мы не сможем поставить на него факел. Данный аргумент убирает эту механику.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
